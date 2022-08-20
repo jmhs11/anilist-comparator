@@ -1,56 +1,164 @@
 import { gql, useLazyQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
+import AnimeList from './components/AnimeList';
+import InputSearch from './components/forms/InputSearch';
+import { validateUser } from './components/lib/users/userValidation';
 
-const query = gql`
-	query ($id: Int, $name: String) {
-		User(id: $id, name: $name) {
-			name
-			id
-			about(asHtml: true)
+const SEARCH_USERS_LIKE = gql`
+	query SearchUsersLike($search: String) {
+		users: Page(page: 0, perPage: 5) {
+			results: users(search: $search) {
+				id
+				name
+			}
 		}
 	}
 `;
 
-const App = () => {
-	const [getUser, result] = useLazyQuery(query);
-	const [user, setUser] = useState();
+const SEARCH_USER_ANILIST = gql`
+	query SearchUserAniList($search: String, $isAdult: Boolean) {
+		anime: Page(perPage: 8) {
+			pageInfo {
+				total
+			}
+			results: media(type: ANIME, isAdult: $isAdult, search: $search) {
+				id
+				title {
+					userPreferred
+				}
+				coverImage {
+					medium
+				}
+				type
+				format
+				bannerImage
+				isLicensed
+				startDate {
+					year
+				}
+			}
+		}
+	}
+`;
 
-	const showUser = () => {
-		getUser({
-			variables: { name: document.querySelector('[name="input"]').value }
+const prettyJSON = json => <pre>{JSON.stringify(json, null, 2)}</pre>;
+
+const App = () => {
+	const [searchUsers, usersSearched] = useLazyQuery(SEARCH_USERS_LIKE);
+	const { user: user1, setName } = useFormValues(searchUsers);
+	const [searchUsers2, usersSearched2] = useLazyQuery(SEARCH_USERS_LIKE);
+	const { user: user2, setName: setName2 } = useFormValues(searchUsers2);
+
+	const [searchUser1AniList, user1AniList] = useLazyQuery(SEARCH_USER_ANILIST);
+	const { userAniList, searchAnime } = useSearch(
+		user1AniList,
+		searchUser1AniList
+	);
+
+	return (
+		<div className='p-4'>
+			<header className='my-4'>
+				<h1 className='text-center'>ANILIST COMPARATOR</h1>
+			</header>
+			<main className='grid grid-cols-2 gap-4'>
+				<section className='p-4'>
+					<InputSearch
+						placeholder='Introduce usuario a comparar'
+						className='mb-4'
+						value={user1.value}
+						error={user1.error}
+						handlerChange={setName}
+						handlerClick={searchAnime}
+						autocompleteItems={usersSearched.data}
+					/>
+					{user1 ? prettyJSON(user1) : null}
+					<AnimeList animes={userAniList} />
+				</section>
+				<section className='p-4'>
+					<InputSearch
+						placeholder='Introduce usuario a comparar'
+						className='mb-4'
+						value={user2.value}
+						error={user2.error}
+						handlerChange={setName2}
+						handlerClick={() => {}}
+						autocompleteItems={usersSearched2.data}
+					/>
+					{user2 ? prettyJSON(user2) : null}
+					<AnimeList animes={[]} />
+				</section>
+			</main>
+		</div>
+	);
+};
+
+const useFormValues = searchOption => {
+	const [user, setUser] = useState({
+		value: '',
+		loading: false,
+		error: undefined
+	});
+
+	const setName = name => {
+		const error = validateUser(name);
+
+		if (error) {
+			// REFACTOR PORQUE CREO QUE NO SIRVE
+			setNameError(error);
+		}
+
+		setUser({
+			value: name,
+			error,
+			loading: !error
+		});
+	};
+
+	const setNameError = error => {
+		setUser({
+			...user,
+			loading: false,
+			error
 		});
 	};
 
 	useEffect(() => {
-		setUser(result.data);
-	}, [result]);
+		if (user.loading) {
+			const timeout = setTimeout(() => {
+				searchOption({
+					variables: {
+						search: user.value
+					}
+				});
+			}, 500);
+			return () => clearTimeout(timeout);
+		}
+	}, [user, searchOption]);
 
-	return (
-		<>
-			<div className='flex'>
-				<div className='m-4'>
-					<input
-						className='block mb-4 input input-primary'
-						text='Button'
-						name='input'
-					/>
-				</div>
-				<div className='m-4'>
-					<input className='block mb-4 input input-primary' text='Button' />
-				</div>
-				<button type='button' onClick={showUser}>
-					Enviar
-				</button>
-			</div>
-			{user && (
-				<>
-					<p>{user.User.id}</p>
-					<p>{user.User.name}</p>
-					<p dangerouslySetInnerHTML={{ __html: user.User.about }}></p>
-				</>
-			)}
-		</>
-	);
+	return { user, setName };
+};
+
+const useSearch = (userAniListHook, searchUserAniList) => {
+	const [userAniList, setUserAniList] = useState({
+		data: undefined,
+		error: undefined,
+		loading: false
+	});
+
+	const searchAnime = user => {
+		searchUserAniList({
+			variables: {
+				search: user
+			}
+		});
+
+		setUserAniList({
+			...userAniList,
+			data: userAniListHook.data
+		});
+	};
+
+	return { userAniList, searchAnime };
 };
 
 export default App;
