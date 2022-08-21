@@ -1,45 +1,9 @@
-import { gql, useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import AnimeList from './components/AnimeList';
 import InputSearch from './components/forms/InputSearch';
 import { validateUser } from './components/lib/users/userValidation';
-
-const SEARCH_USERS_LIKE = gql`
-	query SearchUsersLike($search: String) {
-		users: Page(page: 0, perPage: 5) {
-			results: users(search: $search) {
-				id
-				name
-			}
-		}
-	}
-`;
-
-const SEARCH_USER_ANILIST = gql`
-	query SearchUserAniList($search: String, $isAdult: Boolean) {
-		anime: Page(perPage: 8) {
-			pageInfo {
-				total
-			}
-			results: media(type: ANIME, isAdult: $isAdult, search: $search) {
-				id
-				title {
-					userPreferred
-				}
-				coverImage {
-					medium
-				}
-				type
-				format
-				bannerImage
-				isLicensed
-				startDate {
-					year
-				}
-			}
-		}
-	}
-`;
+import { SEARCH_USERS_LIKE } from './queries/searchUser.js';
 
 const prettyJSON = json => <pre>{JSON.stringify(json, null, 2)}</pre>;
 
@@ -49,11 +13,11 @@ const App = () => {
 	const [searchUsers2, usersSearched2] = useLazyQuery(SEARCH_USERS_LIKE);
 	const { user: user2, setName: setName2 } = useFormValues(searchUsers2);
 
-	const [searchUser1AniList, user1AniList] = useLazyQuery(SEARCH_USER_ANILIST);
-	const { userAniList, searchAnime } = useSearch(
-		user1AniList,
-		searchUser1AniList
-	);
+	// const [searchUser1AniList, user1AniList] = useLazyQuery(SEARCH_USER_ANILIST);
+	// const { userAniList, searchAnime } = useSearch(
+	// 	user1AniList,
+	// 	searchUser1AniList
+	// );
 
 	return (
 		<div className='p-4'>
@@ -68,11 +32,11 @@ const App = () => {
 						value={user1.value}
 						error={user1.error}
 						handlerChange={setName}
-						handlerClick={searchAnime}
+						// handlerClick={searchAnime}
 						autocompleteItems={usersSearched.data}
 					/>
 					{user1 ? prettyJSON(user1) : null}
-					<AnimeList animes={userAniList} />
+					<AnimeList user={user1.value} />
 				</section>
 				<section className='p-4'>
 					<InputSearch
@@ -138,27 +102,27 @@ const useFormValues = searchOption => {
 	return { user, setName };
 };
 
-const useSearch = (userAniListHook, searchUserAniList) => {
-	const [userAniList, setUserAniList] = useState({
-		data: undefined,
-		error: undefined,
-		loading: false
-	});
+// const useSearch = (userAniListHook, searchUserAniList) => {
+// 	const [userAniList, setUserAniList] = useState({
+// 		data: undefined,
+// 		error: undefined,
+// 		loading: false
+// 	});
 
-	const searchAnime = user => {
-		searchUserAniList({
-			variables: {
-				search: user
-			}
-		});
+// 	const searchAnime = user => {
+// 		searchUserAniList({
+// 			variables: {
+// 				search: user
+// 			}
+// 		});
 
-		setUserAniList({
-			...userAniList,
-			data: userAniListHook.data
-		});
-	};
+// 		setUserAniList({
+// 			...userAniList,
+// 			data: userAniListHook.data
+// 		});
+// 	};
 
-	return { userAniList, searchAnime };
-};
+// 	return { userAniList, searchAnime };
+// };
 
 export default App;
