@@ -45,11 +45,10 @@ const App = () => {
 						value={user2.value}
 						error={user2.error}
 						handlerChange={setName2}
-						handlerClick={() => {}}
 						autocompleteItems={usersSearched2.data}
 					/>
 					{user2 ? prettyJSON(user2) : null}
-					<AnimeList animes={[]} />
+					<AnimeList user={user2.value} />
 				</section>
 			</main>
 		</div>
