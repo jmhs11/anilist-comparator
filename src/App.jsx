@@ -2,6 +2,7 @@ import { useLazyQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import AnimeList from './components/AnimeList';
 import InputSearch from './components/forms/InputSearch';
+import Header from './components/Header';
 import { validateUser } from './components/lib/users/userValidation';
 import { SEARCH_USERS_LIKE } from './queries/searchUser.js';
 
@@ -21,9 +22,7 @@ const App = () => {
 
 	return (
 		<div className='p-4'>
-			<header className='my-4'>
-				<h1 className='text-center'>ANILIST COMPARATOR</h1>
-			</header>
+			<Header />
 			<main className='grid grid-cols-2 gap-4'>
 				<section className='p-4'>
 					<InputSearch
