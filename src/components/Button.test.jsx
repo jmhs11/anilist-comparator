@@ -16,9 +16,7 @@ describe('Button', () => {
 	it('clicking the button calls event handler once', () => {
 		// Arrange
 		const mockHandler = vi.fn();
-		const component = render(
-			<Button text={buttonText} handleClick={mockHandler} />
-		);
+		const component = render(<Button text={buttonText} handleClick={mockHandler} />);
 		const button = component.getByText(buttonText);
 		// Act
 		fireEvent.click(button);

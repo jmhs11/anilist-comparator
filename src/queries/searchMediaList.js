@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-export const SEARCH_USER_ANILIST = gql`
-	query ($userId: Int, $userName: String, $type: MediaType) {
+export const SEARCH_USER_MEDIALIST = gql`
+	query SEARCH_USER_MEDIALIST($userId: Int, $userName: String, $type: MediaType) {
 		MediaListCollection(userId: $userId, userName: $userName, type: $type) {
 			lists {
 				name
