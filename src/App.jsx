@@ -5,7 +5,7 @@ import InputSearch from './components/forms/InputSearch';
 import { validateUser } from './components/lib/users/userValidation';
 import { SEARCH_USERS_LIKE } from './queries/searchUser.js';
 
-const prettyJSON = json => <pre>{JSON.stringify(json, null, 2)}</pre>;
+// const prettyJSON = json => <pre>{JSON.stringify(json, null, 2)}</pre>;
 
 const App = () => {
 	const [searchUsers, usersSearched] = useLazyQuery(SEARCH_USERS_LIKE);
@@ -35,7 +35,7 @@ const App = () => {
 						// handlerClick={searchAnime}
 						autocompleteItems={usersSearched.data}
 					/>
-					{user1 ? prettyJSON(user1) : null}
+					{/* {user1 ? prettyJSON(user1) : null} */}
 					<AnimeList user={user1.value} />
 				</section>
 				<section className='p-4'>
@@ -47,7 +47,7 @@ const App = () => {
 						handlerChange={setName2}
 						autocompleteItems={usersSearched2.data}
 					/>
-					{user2 ? prettyJSON(user2) : null}
+					{/* {user2 ? prettyJSON(user2) : null} */}
 					<AnimeList user={user2.value} />
 				</section>
 			</main>
