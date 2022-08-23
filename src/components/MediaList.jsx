@@ -10,7 +10,7 @@ const MediaList = ({ mediaList }) => {
 				? mediaList.data.MediaListCollection.lists.map(list => (
 						<div key={list.name} className='last:mb-14'>
 							<h2 className='my-4 text-3xl font-bold text-white'>{list.name}</h2>
-							<div className='grid grid-cols-[repeat(auto-fill,150px)] gap-4 place-content-center'>
+							<div className='grid grid-cols-2 md:grid-cols-[repeat(auto-fill,150px)] gap-4 md:place-content-center'>
 								{list.entries.map(entry => (
 									<a
 										key={entry.id}
