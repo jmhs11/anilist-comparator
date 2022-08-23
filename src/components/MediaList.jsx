@@ -2,16 +2,14 @@ const MediaList = ({ mediaList }) => {
 	if (mediaList && mediaList.loading) return <div>Loading...</div>;
 
 	return (
-		<>
+		<div className='overflow-y-auto overscroll-y-contain h-full'>
 			{mediaList &&
 			mediaList.data &&
 			mediaList.data.MediaListCollection &&
 			mediaList.data.MediaListCollection.lists.length > 0
 				? mediaList.data.MediaListCollection.lists.map(list => (
-						<>
-							<h2 key={list.name} className='my-4 text-3xl font-bold text-white'>
-								{list.name}
-							</h2>
+						<div key={list.name} className='last:mb-14'>
+							<h2 className='my-4 text-3xl font-bold text-white'>{list.name}</h2>
 							<div className='grid grid-cols-[repeat(auto-fill,150px)] gap-4 place-content-center'>
 								{list.entries.map(entry => (
 									<a
@@ -36,10 +34,10 @@ const MediaList = ({ mediaList }) => {
 									</a>
 								))}
 							</div>
-						</>
+						</div>
 				  ))
 				: null}
-		</>
+		</div>
 	);
 };
 

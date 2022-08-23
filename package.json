@@ -22,7 +22,8 @@
 		"daisyui": "2.22.0",
 		"graphql": "16.6.0",
 		"react": "18.2.0",
-		"react-dom": "18.2.0"
+		"react-dom": "18.2.0",
+		"react-split": "2.0.14"
 	},
 	"devDependencies": {
 		"@testing-library/react": "13.3.0",
@@ -52,7 +53,7 @@
 		"vitest": "0.21.0"
 	},
 	"lint-staged": {
-		"*.{js,jsx,ts,tsx,json,css,scss,md}": "npm run lint",
+		"*.{js,jsx,ts,tsx,json,md}": "npm run lint",
 		"*.css": "npm run stylelint",
 		"**/*.{js,jsx,ts,tsx,json,css,scss,md}": "npm run format"
 	}

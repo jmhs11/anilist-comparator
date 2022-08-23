@@ -1,9 +1,9 @@
+import { useLazyQuery } from '@apollo/client';
+import { useFormValues } from '../lib/hooks/useFormValues';
+import { SEARCH_USER_MEDIALIST } from '../queries/searchMediaList';
+import { SEARCH_USERS_LIKE } from '../queries/searchUser';
 import InputSearch from './forms/InputSearch';
 import MediaList from './MediaList';
-import { useFormValues } from '../lib/hooks/useFormValues';
-import { useLazyQuery } from '@apollo/client';
-import { SEARCH_USERS_LIKE } from '../queries/searchUser';
-import { SEARCH_USER_MEDIALIST } from '../queries/searchMediaList';
 
 const MediaSection = () => {
 	const [searchUsers, usersSearched] = useLazyQuery(SEARCH_USERS_LIKE);
@@ -23,7 +23,7 @@ const MediaSection = () => {
 	};
 
 	return (
-		<section className='p-4'>
+		<section className='m-4 overflow-hidden'>
 			<InputSearch
 				placeholder='Introduce usuario a comparar'
 				className='mb-4'
