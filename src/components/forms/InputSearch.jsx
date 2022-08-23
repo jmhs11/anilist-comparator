@@ -11,7 +11,7 @@ const InputSearch = ({
 }) => {
 	return (
 		<div className='w-full my-2 dropdown'>
-			<div className={`relative ${className || ''}`}>
+			<div className={`relative ${className || ''}`} tabIndex='0'>
 				<SearchIcon className='absolute w-6 h-6 pointer-events-none top-3 left-4 text-slate-200' />
 				<input
 					{...props}
@@ -38,6 +38,7 @@ const InputSearch = ({
 									const { setName, setList } = handlerClick;
 									setName(item.name);
 									setList(MEDIA_TYPE.ANIME);
+									document.activeElement.blur();
 									console.log(item.name, 'clicked');
 								}}
 								className='flex gap-4'
