@@ -10,7 +10,7 @@ const InputSearch = ({
 	...props
 }) => {
 	return (
-		<div className='w-full dropdown'>
+		<div className='w-full my-2 dropdown'>
 			<div className={`relative ${className || ''}`}>
 				<SearchIcon className='absolute w-6 h-6 pointer-events-none top-3 left-4 text-slate-200' />
 				<input
@@ -29,7 +29,7 @@ const InputSearch = ({
 			{autocompleteItems && autocompleteItems.users.results.length ? (
 				<ul
 					tabIndex='0'
-					className='w-full p-2 border shadow dropdown-content dropdown-open menu bg-base-100 rounded-box'
+					className='w-full mt-2 p-2 border shadow dropdown-content dropdown-open menu bg-base-100 rounded-box'
 				>
 					{autocompleteItems.users.results.map(item => (
 						<li key={item.id}>

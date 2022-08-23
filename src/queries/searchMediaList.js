@@ -15,7 +15,7 @@ export const SEARCH_USER_MEDIALIST = gql`
 				id
 				name
 				avatar {
-					large
+					medium
 				}
 				mediaListOptions {
 					scoreFormat

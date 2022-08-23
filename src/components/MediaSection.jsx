@@ -23,10 +23,10 @@ const MediaSection = () => {
 	};
 
 	return (
-		<section className='m-4 overflow-hidden'>
+		<section className='p-4 pt-0 overflow-hidden'>
 			<InputSearch
 				placeholder='Introduce usuario a comparar'
-				className='mb-4'
+				className=''
 				value={user.value}
 				error={user.error}
 				handlerChange={setName}

@@ -2,9 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+	.scrollbar {
+		margin-left: 0.5rem;
+		scrollbar-width: thin;
+		scrollbar-color: hsl(var(--b2) / 50%) hsl(var(--b3));
+	}
+
+	.scrollbar::-webkit-scrollbar {
+		width: 0.5rem;
+		height: 0.9375rem;
+	}
+
+	.scrollbar::-webkit-scrollbar-track {
+		border-radius: 100vh;
+		background: hsl(var(--b2) / 30%);
+	}
+
+	.scrollbar::-webkit-scrollbar-thumb {
+		background: hsl(var(--b3));
+		border-radius: 100vh;
+	}
+}
+
 .gutter {
+	background-color: hsl(var(--b1));
 	background-repeat: no-repeat;
 	background-position: 50%;
+	margin: 0.5rem 0 0;
 }
 
 .gutter.gutter-vertical {
