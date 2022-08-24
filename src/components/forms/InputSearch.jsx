@@ -1,6 +1,7 @@
 import SearchIcon from '../icons/SearchIcon';
+import Spinner from '../Spinner';
 
-const InputSearch = ({ className, handlerClick, autocompleteItems, error, ...props }) => {
+const InputSearch = ({ className, handlerClick, autocompleteItems, error, loading, ...props }) => {
 	return (
 		<div className='w-full my-2 dropdown'>
 			<div className={`relative ${className || ''}`} tabIndex='0'>
@@ -11,6 +12,7 @@ const InputSearch = ({ className, handlerClick, autocompleteItems, error, ...pro
 					className={`input input-bordered pl-12 w-full ${error && 'input-error'} `}
 					type='text'
 				></input>
+				{loading && <Spinner className='absolute w-6 h-6 pointer-events-none top-3 right-4' />}
 				{error && (
 					<label className='label'>
 						<span className='text-red-400 label-text-alt'>{error}</span>

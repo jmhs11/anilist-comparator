@@ -31,6 +31,7 @@ const MediaSection = ({ filters }) => {
 				className=''
 				value={user.value}
 				error={user.error}
+				loading={user.loading}
 				onChange={ev => setName(ev.target.value)}
 				handlerClick={ev => {
 					setName(ev.target.textContent);
@@ -38,8 +39,7 @@ const MediaSection = ({ filters }) => {
 				}}
 				autocompleteItems={usersSearched.data}
 			/>
-			<div className='h-full pb-14 md:pb-0'>
-				{' '}
+			<div className={`h-full pb-14 md:pb-0 ${mediaList.loading && 'grid place-content-center'}`}>
 				{mediaList ? <MediaList mediaList={mediaList} /> : null}
 			</div>
 		</section>
