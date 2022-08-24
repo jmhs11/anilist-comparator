@@ -1,14 +1,6 @@
-import { MEDIA_TYPE } from '../../constants/mediaTypes';
 import SearchIcon from '../icons/SearchIcon';
 
-const InputSearch = ({
-	className,
-	handlerChange,
-	handlerClick,
-	autocompleteItems,
-	error,
-	...props
-}) => {
+const InputSearch = ({ className, handlerClick, autocompleteItems, error, ...props }) => {
 	return (
 		<div className='w-full my-2 dropdown'>
 			<div className={`relative ${className || ''}`} tabIndex='0'>
@@ -18,7 +10,6 @@ const InputSearch = ({
 					tabIndex={0}
 					className={`input input-bordered pl-12 w-full ${error && 'input-error'} `}
 					type='text'
-					onChange={ev => handlerChange(ev.target.value)}
 				></input>
 				{error && (
 					<label className='label'>
@@ -35,11 +26,11 @@ const InputSearch = ({
 						<li key={item.id}>
 							<a
 								onClick={ev => {
-									const { setName, setList } = handlerClick;
-									setName(item.name);
-									setList(MEDIA_TYPE.ANIME);
+									handlerClick(ev);
+									// setList(MEDIA_TYPE.ANIME);
 									document.activeElement.blur();
-									console.log(item.name, 'clicked');
+									console.log(item, 'clicked');
+									console.log(ev);
 								}}
 								className='flex gap-4'
 							>

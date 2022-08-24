@@ -2,7 +2,7 @@ const MediaList = ({ mediaList }) => {
 	if (mediaList && mediaList.loading) return <div>Loading...</div>;
 
 	return (
-		<div className='overflow-y-auto h-[84%] md:max-h-fit md:h-[78vh] scrollbar'>
+		<div className='overflow-y-auto h-full md:max-h-fit md:h-[78vh] scrollbar'>
 			{mediaList &&
 			mediaList.data &&
 			mediaList.data.MediaListCollection &&
