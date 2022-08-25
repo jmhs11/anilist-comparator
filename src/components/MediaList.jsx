@@ -1,7 +1,7 @@
 import Spinner from './Spinner';
 
-const MediaList = ({ mediaList }) => {
-	if (mediaList && mediaList.loading) return <Spinner />;
+const MediaList = ({ loading, mediaList }) => {
+	if (loading) return <Spinner />;
 
 	return (
 		<div className='overflow-y-auto h-full md:max-h-fit md:h-[78vh] scrollbar'>

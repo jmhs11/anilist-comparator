@@ -1,48 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { validateUser } from '../users/userValidation';
 
-export const useFormValues = searchOption => {
+export const useFormValues = () => {
 	const [user, setUser] = useState({
 		value: '',
-		loading: false,
 		error: undefined
 	});
 
 	const setName = name => {
 		const error = validateUser(name);
 
-		if (error) {
-			// REFACTOR PORQUE CREO QUE NO SIRVE
-			setNameError(error);
-		}
-
-		setUser({
-			value: name,
-			error,
-			loading: !error
-		});
-	};
-
-	const setNameError = error => {
 		setUser({
 			...user,
-			loading: false,
-			error
+			value: name
 		});
+
+		if (error) {
+			setNameError(error);
+		}
 	};
 
-	useEffect(() => {
-		if (user.loading) {
-			const timeout = setTimeout(() => {
-				searchOption({
-					variables: {
-						search: user.value
-					}
-				});
-			}, 500);
-			return () => clearTimeout(timeout);
-		}
-	}, [user, searchOption]);
+	const setNameError = newError => {
+		setUser(prevFormValues => ({
+			...prevFormValues,
+			error: newError
+		}));
+	};
 
-	return { user, setName };
+	return { user, setName, setNameError };
 };

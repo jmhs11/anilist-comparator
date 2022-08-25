@@ -1,3 +1,4 @@
+import { MEDIA_LIST_STATUSES } from '../constants/mediaListStatuses';
 import { MEDIA_TYPE } from '../constants/mediaTypes';
 import FilterGroup from './forms/FilterGroup';
 import InputRangeFilter from './forms/InputRangeFilter';
@@ -5,7 +6,6 @@ import InputSearchFilter from './forms/InputSearchFilter';
 import ListFilter from './forms/ListFilter';
 import SelectFilter from './forms/SelectFilter';
 
-const LISTS = ['Todas', 'Viendo', 'Completadas', 'Pendientes', 'Descartadas', 'Pausadas'];
 const FORMATS = ['TV', 'TV Show', 'Movie', 'Special', 'OVA', 'ONA', 'Music'];
 const STATUSES = ['Finished', 'Releasing', 'Not Yet Released', 'Cancelled'];
 const GENRES = [
@@ -89,21 +89,21 @@ const Filters = ({
 					))}
 				</SelectFilter>
 				<ListFilter label='Listas'>
-					{LISTS.map(list => (
+					{Object.entries(MEDIA_LIST_STATUSES).map(([key, value]) => (
 						<span
-							key={list}
+							key={key}
 							className={`hover:bg-base-200 cursor-pointer px-3 py-1 rounded-lg ${
-								filters.list === list
+								value === filters.list
 									? 'bg-primary text-white hover:bg-primary-focus'
-									: filters.list === '' && list === 'Todas'
+									: filters.list === undefined && value === MEDIA_LIST_STATUSES.ALL
 									? 'bg-primary text-white hover:bg-primary-focus'
 									: ''
 							}`}
 							onClick={ev => {
-								setList(ev.target.textContent);
+								setList(MEDIA_LIST_STATUSES[ev.target.textContent]);
 							}}
 						>
-							{list}
+							{key}
 						</span>
 					))}
 				</ListFilter>
@@ -179,11 +179,7 @@ const Filters = ({
 					/>
 				</FilterGroup>
 				<FilterGroup label='Sort'>
-					<SelectFilter
-						value={filters.sort}
-						onChange={ev => setSort(ev.target.value)}
-						defaultOption='Score'
-					>
+					<SelectFilter value={filters.sort || 'Score'} onChange={ev => setSort(ev.target.value)}>
 						{SORT_OPTIONS.map(sort => (
 							<option key={sort} value={sort}>
 								{sort}

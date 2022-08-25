@@ -1,8 +1,14 @@
 import { gql } from '@apollo/client';
 
 export const SEARCH_USER_MEDIALIST = gql`
-	query SEARCH_USER_MEDIALIST($userId: Int, $userName: String, $type: MediaType) {
-		MediaListCollection(userId: $userId, userName: $userName, type: $type) {
+	query SEARCH_USER_MEDIALIST(
+		$userId: Int
+		$userName: String
+		$type: MediaType
+		$status: MediaListStatus # $sort: MediaListSort
+	) # $order: MediaListOrder
+	{
+		MediaListCollection(userId: $userId, userName: $userName, type: $type, status: $status) {
 			lists {
 				name
 				isCustomList

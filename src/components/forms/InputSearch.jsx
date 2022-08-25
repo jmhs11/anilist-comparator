@@ -19,12 +19,12 @@ const InputSearch = ({ className, handlerClick, autocompleteItems, error, loadin
 					</label>
 				)}
 			</div>
-			{autocompleteItems && autocompleteItems.users.results.length ? (
+			{autocompleteItems && autocompleteItems.length ? (
 				<ul
 					tabIndex='0'
 					className='w-full mt-2 p-2 border shadow dropdown-content dropdown-open menu bg-base-100 rounded-box'
 				>
-					{autocompleteItems.users.results.map(item => (
+					{autocompleteItems.map(item => (
 						<li key={item.id}>
 							<a
 								onClick={ev => {

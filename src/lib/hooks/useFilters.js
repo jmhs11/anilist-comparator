@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MEDIA_LIST_STATUSES } from '../../constants/mediaListStatuses';
 import { MEDIA_TYPE } from '../../constants/mediaTypes';
 
 const useFilters = () => {
@@ -6,7 +7,7 @@ const useFilters = () => {
 		mediaType: MEDIA_TYPE.ANIME, // ANIME or MANGA
 		title: '', // search by title
 		genres: [], // Array de generos a filtrar (Romance, Action, ...)
-		list: '', // Opciones seleccionables (All, Watching, Planned, Reading ...)
+		list: MEDIA_LIST_STATUSES.ALL, // Opciones seleccionables (All, Watching, Planned, Reading ...)
 		showFormat: '', // Formato del contenido (TV, OVA, Manga, One Shot ...)
 		status: '', // Estado del contenido (Finished, NYA, ...)
 		country: '', // Pais de origen (Japan, South Korea, China)
