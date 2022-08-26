@@ -2,35 +2,33 @@ import { MEDIA_LIST_STATUSES } from '../constants/mediaListStatuses';
 import { MEDIA_TYPE } from '../constants/mediaTypes';
 import { SORT_OPTIONS } from '../constants/sortOptions';
 import FilterGroup from './forms/FilterGroup';
-import InputRangeFilter from './forms/InputRangeFilter';
-import InputSearchFilter from './forms/InputSearchFilter';
 import ListFilter from './forms/ListFilter';
 import SelectFilter from './forms/SelectFilter';
 
-const FORMATS = ['TV', 'TV Show', 'Movie', 'Special', 'OVA', 'ONA', 'Music'];
-const STATUSES = ['Finished', 'Releasing', 'Not Yet Released', 'Cancelled'];
-const GENRES = [
-	'Action',
-	'Adventure',
-	'Comedy',
-	'Drama',
-	'Ecchi',
-	'Fantasy',
-	'Horror',
-	'Hentai',
-	'Mahou Shoujo',
-	'Mecha',
-	'Music',
-	'Mystery',
-	'Psychological',
-	'Romance',
-	'Sci-Fi',
-	'Slice of Life',
-	'Sports',
-	'Supernatural',
-	'Thriller'
-];
-const COUNTRIES = ['Japan', 'Shouth Korea', 'China'];
+// const FORMATS = ['TV', 'TV Show', 'Movie', 'Special', 'OVA', 'ONA', 'Music'];
+// const STATUSES = ['Finished', 'Releasing', 'Not Yet Released', 'Cancelled'];
+// const GENRES = [
+// 	'Action',
+// 	'Adventure',
+// 	'Comedy',
+// 	'Drama',
+// 	'Ecchi',
+// 	'Fantasy',
+// 	'Horror',
+// 	'Hentai',
+// 	'Mahou Shoujo',
+// 	'Mecha',
+// 	'Music',
+// 	'Mystery',
+// 	'Psychological',
+// 	'Romance',
+// 	'Sci-Fi',
+// 	'Slice of Life',
+// 	'Sports',
+// 	'Supernatural',
+// 	'Thriller'
+// ];
+// // const COUNTRIES = ['Japan', 'Shouth Korea', 'China'];
 
 const Filters = ({
 	filters,
@@ -59,12 +57,12 @@ const Filters = ({
 					applyFilters(filters);
 				}}
 			>
-				<InputSearchFilter
+				{/* <InputSearchFilter
 					value={filters.title}
 					onChange={ev => setTitle(ev.target.value)}
 					placeholder='Introduce un título'
 					label='Buscar'
-				/>
+				/> */}
 				<SelectFilter
 					value={filters.mediaType}
 					onChange={ev => setMediaType(ev.target.value)}
@@ -95,7 +93,7 @@ const Filters = ({
 						</span>
 					))}
 				</ListFilter>
-				<FilterGroup label='Filtros' className='flex flex-col gap-2'>
+				{/* <FilterGroup label='Filtros' className='flex flex-col gap-2'>
 					<SelectFilter
 						value={filters.showFormat}
 						onChange={ev => setShowFormat(ev.target.value)}
@@ -150,9 +148,9 @@ const Filters = ({
 							</option>
 						))}
 					</SelectFilter>
-				</FilterGroup>
+				</FilterGroup> */}
 
-				<FilterGroup
+				{/* <FilterGroup
 					label='Year'
 					className='my-2'
 					altLabel={filters.year <= '1950' ? '' : filters.year}
@@ -165,7 +163,7 @@ const Filters = ({
 							setYear(ev.target.value);
 						}}
 					/>
-				</FilterGroup>
+				</FilterGroup> */}
 				<FilterGroup label='Sort'>
 					<SelectFilter value={filters.sort || 'SCORE'} onChange={ev => setSort(ev.target.value)}>
 						{Object.entries(SORT_OPTIONS).map(([key, value]) => (
