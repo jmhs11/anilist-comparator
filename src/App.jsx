@@ -14,10 +14,10 @@ const App = () => {
 	const { aniUsers, setMediaList, setUser } = useAniUsers();
 	const { filters, ...setFiltersFunctions } = useFilters();
 
-	const [split, setSplit] = useState(window.innerWidth <= 768);
+	const [split, setSplit] = useState(window.innerWidth < 768);
 
 	useEffect(() => {
-		window.addEventListener('resize', () => setSplit(window.innerWidth <= 768));
+		window.addEventListener('resize', () => setSplit(window.innerWidth < 768));
 	}, []);
 
 	const { refetch: searchMediaList } = useQuery(SEARCH_USER_MEDIALIST, { skip: true });
