@@ -12,7 +12,7 @@ const useFilters = () => {
 		status: '', // Estado del contenido (Finished, NYA, ...)
 		country: '', // Pais de origen (Japan, South Korea, China)
 		year: '', // Año de publicacion (2019, 2020, ...)
-		sort: '' // Tipo de ordenado (score, title, last Updated, ...)
+		sort: 'SCORE' // Tipo de ordenado (score, title, last Updated, ...)
 	});
 
 	const setMediaType = mediaType => setFilters({ ...filters, mediaType });

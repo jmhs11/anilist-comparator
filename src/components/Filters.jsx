@@ -1,5 +1,6 @@
 import { MEDIA_LIST_STATUSES } from '../constants/mediaListStatuses';
 import { MEDIA_TYPE } from '../constants/mediaTypes';
+import { SORT_OPTIONS } from '../constants/sortOptions';
 import FilterGroup from './forms/FilterGroup';
 import InputRangeFilter from './forms/InputRangeFilter';
 import InputSearchFilter from './forms/InputSearchFilter';
@@ -30,18 +31,6 @@ const GENRES = [
 	'Thriller'
 ];
 const COUNTRIES = ['Japan', 'Shouth Korea', 'China'];
-const SORT_OPTIONS = [
-	'Title',
-	'Score',
-	'Progress',
-	'Last Updated',
-	'Last Added',
-	'Start Date',
-	'Completed Date',
-	'Release Date',
-	'Average Score',
-	'Popularity'
-];
 
 const Filters = ({
 	filters,
@@ -67,8 +56,7 @@ const Filters = ({
 				onSubmit={e => {
 					e.preventDefault();
 					document.activeElement.blur();
-					// applyFilters();
-					console.log(filters);
+					applyFilters(filters);
 				}}
 			>
 				<InputSearchFilter
@@ -179,10 +167,10 @@ const Filters = ({
 					/>
 				</FilterGroup>
 				<FilterGroup label='Sort'>
-					<SelectFilter value={filters.sort || 'Score'} onChange={ev => setSort(ev.target.value)}>
-						{SORT_OPTIONS.map(sort => (
-							<option key={sort} value={sort}>
-								{sort}
+					<SelectFilter value={filters.sort || 'SCORE'} onChange={ev => setSort(ev.target.value)}>
+						{Object.entries(SORT_OPTIONS).map(([key, value]) => (
+							<option key={key} value={value}>
+								{key}
 							</option>
 						))}
 					</SelectFilter>

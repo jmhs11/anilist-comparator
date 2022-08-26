@@ -5,10 +5,16 @@ export const SEARCH_USER_MEDIALIST = gql`
 		$userId: Int
 		$userName: String
 		$type: MediaType
-		$status: MediaListStatus # $sort: MediaListSort
-	) # $order: MediaListOrder
-	{
-		MediaListCollection(userId: $userId, userName: $userName, type: $type, status: $status) {
+		$status: MediaListStatus
+		$sort: MediaListSort # $order: MediaListOrder
+	) {
+		MediaListCollection(
+			userId: $userId
+			userName: $userName
+			type: $type
+			status: $status
+			sort: [$sort]
+		) {
 			lists {
 				name
 				isCustomList
