@@ -45,8 +45,10 @@ const App = () => {
 
 	return (
 		<>
-			<Header />
-			<Filters filters={filters} {...setFiltersFunctions} applyFilters={applyFilters} />
+			<Header
+				slot={<Filters filters={filters} {...setFiltersFunctions} applyFilters={applyFilters} />}
+			/>
+
 			{split ? (
 				<Split className='md:hidden' direction='vertical' style={{ height: 'calc(100vh - 5rem)' }}>
 					<MediaSection

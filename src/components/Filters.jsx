@@ -46,13 +46,13 @@ const Filters = ({
 	applyFilters
 }) => {
 	return (
-		<div className='fixed top-3 right-5 dropdown dropdown-end z-50'>
+		<div className='dropdown dropdown-end'>
 			<label tabIndex='0' className='btn'>
 				Filters
 			</label>
 			<form
 				tabIndex='0'
-				className='dropdown-content mt-3 p-4 shadow bg-base-100 rounded-box border w-max grid grid-cols-2 gap-x-4'
+				className='dropdown-content mt-3 p-4 shadow bg-base-100 rounded-box border w-[90vw] md:w-max grid grid-cols-2 gap-x-4'
 				onSubmit={e => {
 					e.preventDefault();
 					document.activeElement.blur();
