@@ -3,6 +3,23 @@
 	"private": true,
 	"version": "1.0.0",
 	"type": "commonjs",
+	"description": "UNOFFICIAL AniList app for comparing anime and manga lists, including filters, sorting",
+	"keywords": [
+		"anilist",
+		"anime",
+		"manga",
+		"diff"
+	],
+	"author": {
+		"name": "Kuuro",
+		"email": "contact@kuuro.dev",
+		"url": "https://kuuro.dev"
+	},
+	"homepage": "https://anilist-comparator.kuuro.dev/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jmhs11/anilist-comparator.git"
+	},
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
