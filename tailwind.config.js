@@ -4,7 +4,7 @@ module.exports = {
 	theme: {
 		extend: {
 			gridTemplateColumns: {
-				layout: '1fr 1px 1fr'
+				header: '100px 1fr 100px'
 			},
 			gridTemplateRows: {
 				split: '1fr 10px 1fr'
