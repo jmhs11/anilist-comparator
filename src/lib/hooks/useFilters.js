@@ -12,7 +12,8 @@ const useFilters = () => {
 		status: '', // Estado del contenido (Finished, NYA, ...)
 		country: '', // Pais de origen (Japan, South Korea, China)
 		year: '', // Año de publicacion (2019, 2020, ...)
-		sort: 'SCORE' // Tipo de ordenado (score, title, last Updated, ...)
+		sort: 'SCORE', // Tipo de ordenado (score, title, last Updated, ...),
+		distinct: false // Solo las series que no son comunes entre las 2 listas
 	});
 
 	const setMediaType = mediaType => setFilters({ ...filters, mediaType });
@@ -30,6 +31,7 @@ const useFilters = () => {
 	const setCountry = country => setFilters({ ...filters, country });
 	const setYear = year => setFilters({ ...filters, year });
 	const setSort = sort => setFilters({ ...filters, sort });
+	const setDistinct = distinct => setFilters({ ...filters, distinct });
 
 	return {
 		filters,
@@ -41,7 +43,8 @@ const useFilters = () => {
 		setStatus,
 		setCountry,
 		setYear,
-		setSort
+		setSort,
+		setDistinct
 	};
 };
 

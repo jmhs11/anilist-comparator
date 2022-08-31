@@ -2,6 +2,7 @@ import { MEDIA_LIST_STATUSES } from '../constants/mediaListStatuses';
 import { MEDIA_TYPE } from '../constants/mediaTypes';
 import { SORT_OPTIONS } from '../constants/sortOptions';
 import FilterGroup from './forms/FilterGroup';
+import InputCheckbox from './forms/InputCheckbox';
 import ListFilter from './forms/ListFilter';
 import SelectFilter from './forms/SelectFilter';
 
@@ -41,6 +42,7 @@ const Filters = ({
 	setCountry,
 	setYear,
 	setSort,
+	setDistinct,
 	applyFilters
 }) => {
 	return (
@@ -85,6 +87,11 @@ const Filters = ({
 						</option>
 					))}
 				</SelectFilter>
+				<InputCheckbox
+					checked={filters.distinct}
+					onChange={ev => setDistinct(ev.target.checked)}
+					label='Sólo series distintas'
+				/>
 				<ListFilter label='Listas'>
 					{Object.entries(MEDIA_LIST_STATUSES).map(([key, value]) => (
 						<span
@@ -103,6 +110,7 @@ const Filters = ({
 						</span>
 					))}
 				</ListFilter>
+
 				{/* <FilterGroup label='Filtros' className='flex flex-col gap-2'>
 					<SelectFilter
 						value={filters.showFormat}

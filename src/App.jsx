@@ -14,6 +14,7 @@ const App = () => {
 	const { aniUsers, setMediaList, setUser } = useAniUsers();
 	const { filters, ...setFiltersFunctions } = useFilters();
 
+	const [appliedFilters, setAppliedFilters] = useState(false);
 	const [split, setSplit] = useState(window.innerWidth < 768);
 
 	useEffect(() => {
@@ -23,25 +24,75 @@ const App = () => {
 	const { refetch: searchMediaList } = useQuery(SEARCH_USER_MEDIALIST, { skip: true });
 
 	const fillMediaList = (userKey, search) => {
-		searchMediaList({
-			userName: search,
-			type: filters.mediaType || MEDIA_TYPE.ANIME,
-			status: filters.list || MEDIA_LIST_STATUSES.ALL,
-			sort: filters.sort || ['SCORE']
-		}).then(mediaList => {
-			const mediaListCustom = {
-				data: mediaList.data.MediaListCollection.lists,
-				loading: mediaList.loading
-			};
-			setMediaList(userKey, mediaListCustom);
-		});
+		if (!filters.distinct) {
+			searchMediaList({
+				userName: search,
+				type: filters.mediaType || MEDIA_TYPE.ANIME,
+				status: filters.list || MEDIA_LIST_STATUSES.ALL,
+				sort: filters.sort || ['SCORE']
+			}).then(mediaList => {
+				const mediaListCustom = {
+					data: mediaList.data.MediaListCollection.lists,
+					loading: mediaList.loading
+				};
+
+				setMediaList(userKey, mediaListCustom);
+			});
+		}
 	};
 
 	const applyFilters = filters => {
+		setAppliedFilters(true);
 		if (aniUsers.user1.user.data) fillMediaList('user1', aniUsers.user1.user.data);
 		if (aniUsers.user2.user.data) fillMediaList('user2', aniUsers.user2.user.data);
 		console.log(filters);
 	};
+
+	useEffect(() => {
+		if (filters.distinct && appliedFilters) {
+			const mediaIds = {
+				user1: [],
+				user2: []
+			};
+			let filteredData = {
+				user1: [],
+				user2: []
+			};
+
+			Object.entries(aniUsers).forEach(([userKey, state]) => {
+				mediaIds[userKey] = state.mediaList.data.flatMap(list =>
+					list.entries.map(entry => entry.mediaId)
+				);
+				filteredData[userKey] = state.mediaList.data;
+			});
+
+			const distinct = mediaIds.user1.filter(id => mediaIds.user2.includes(id));
+			console.log(distinct);
+
+			filteredData = Object.entries(filteredData).map(([userkey, data]) => ({
+				[userkey]: data.map(list => ({
+					...list,
+					entries: list.entries.filter(entry => !distinct.includes(entry.mediaId))
+				}))
+			}));
+
+			// Object.entries(aniUsers).forEach(([userKey, state]) => {
+			// 	mediaIds[userKey] = state.mediaList.data.flatMap(list =>
+			// 		list.entries.map(entry => entry.mediaId)
+			// 	);
+
+			// 	filteredData[userKey] = state.mediaList.data;
+			// });
+
+			console.log(filteredData);
+
+			// const list2Ids = userList.map(list => list.entries.map(entry => entry.mediaId)).flat();
+
+			setMediaList('user1', { data: filteredData[0].user1 });
+			setMediaList('user2', { data: filteredData[1].user2 });
+			setAppliedFilters(false);
+		}
+	}, [filters.distinct, appliedFilters]);
 
 	return (
 		<>
