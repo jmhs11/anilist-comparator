@@ -44,8 +44,19 @@ const Filters = ({
 	applyFilters
 }) => {
 	return (
-		<div className='dropdown dropdown-end'>
-			<label tabIndex='0' className='btn'>
+		<div className='dropdown dropdown-end ml-auto'>
+			<label
+				tabIndex='0'
+				className='btn'
+				id='filters-btn'
+				onClick={ev => {
+					const el = document.querySelector('label#filters-btn:focus ~ .dropdown-content');
+					const isFocused = window.getComputedStyle(el).getPropertyValue('opacity') === '1';
+					if (isFocused) {
+						ev.currentTarget.blur();
+					}
+				}}
+			>
 				Filters
 			</label>
 			<form
@@ -79,10 +90,9 @@ const Filters = ({
 						<span
 							key={key}
 							className={`hover:bg-base-200 cursor-pointer px-3 py-1 rounded-lg ${
-								value === filters.list
-									? 'bg-primary text-white hover:bg-primary-focus'
-									: filters.list === undefined && value === MEDIA_LIST_STATUSES.ALL
-									? 'bg-primary text-white hover:bg-primary-focus'
+								value === filters.list ||
+								(filters.list === undefined && value === MEDIA_LIST_STATUSES.ALL)
+									? 'bg-primary text-primary-content hover:bg-primary-focus'
 									: ''
 							}`}
 							onClick={ev => {
