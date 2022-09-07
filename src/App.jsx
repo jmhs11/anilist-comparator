@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Split from 'react-split';
 import Filters from './components/Filters';
 import Header from './components/Header';
@@ -16,10 +16,6 @@ const App = () => {
 
 	const [appliedFilters, setAppliedFilters] = useState(false);
 	const [split, setSplit] = useState(window.innerWidth < 768);
-
-	useEffect(() => {
-		window.addEventListener('resize', () => setSplit(window.innerWidth < 768));
-	}, []);
 
 	const { refetch: searchMediaList } = useQuery(SEARCH_USER_MEDIALIST, { skip: true });
 
@@ -43,12 +39,35 @@ const App = () => {
 
 	const applyFilters = filters => {
 		setAppliedFilters(true);
-		if (aniUsers.user1.user.data) fillMediaList('user1', aniUsers.user1.user.data);
-		if (aniUsers.user2.user.data) fillMediaList('user2', aniUsers.user2.user.data);
 		console.log(filters);
 	};
 
+	const updateMediaLists = useCallback(() => {
+		if (aniUsers.user1.user.data) fillMediaList('user1', aniUsers.user1.user.data);
+		if (aniUsers.user2.user.data) fillMediaList('user2', aniUsers.user2.user.data);
+	}, []);
+
 	useEffect(() => {
+		console.log('useEffect Resize Listener');
+		window.addEventListener('resize', () => setSplit(window.innerWidth < 768));
+	}, []);
+
+	useEffect(() => {
+		console.log('updated user1 mediaList', aniUsers.user1.mediaList.data);
+	}, [aniUsers.user1.mediaList.data]);
+	useEffect(() => {
+		console.log('updated user2 mediaList', aniUsers.user2.mediaList.data);
+	}, [aniUsers.user2.mediaList.data]);
+
+	useEffect(() => {
+		if (appliedFilters) {
+			console.log('useEffect updateMediaLists');
+			updateMediaLists();
+		}
+	}, [appliedFilters, updateMediaLists]);
+
+	useEffect(() => {
+		console.log('distinct effect');
 		if (filters.distinct && appliedFilters) {
 			const mediaIds = {
 				user1: [],
@@ -90,8 +109,8 @@ const App = () => {
 
 			setMediaList('user1', { data: filteredData[0].user1 });
 			setMediaList('user2', { data: filteredData[1].user2 });
-			setAppliedFilters(false);
 		}
+		setAppliedFilters(false);
 	}, [filters.distinct, appliedFilters]);
 
 	return (
