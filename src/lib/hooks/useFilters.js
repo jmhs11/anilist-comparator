@@ -1,9 +1,42 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import { MEDIA_LIST_STATUSES } from '../../constants/mediaListStatuses';
 import { MEDIA_TYPE } from '../../constants/mediaTypes';
 
+const filtersReducer = (state, action) => {
+	switch (action.type) {
+		case 'media_type_changed':
+			return { ...state, mediaType: action.value };
+		case 'title_changed':
+			return { ...state, title: action.value };
+		case 'genres_changed':
+			return {
+				...state,
+				genres: state.genres.includes(action.value)
+					? state.genres.filter(g => g !== action.value)
+					: [action.value, ...state.genres]
+			};
+		case 'list_changed':
+			return { ...state, list: action.value };
+		case 'format_changed':
+			return { ...state, showFormat: action.value };
+		case 'status_changed':
+			return { ...state, status: action.value };
+		case 'country_changed':
+			return { ...state, country: action.value };
+		case 'year_changed':
+			return { ...state, year: action.value };
+		case 'sort_changed':
+			return { ...state, sort: action.value };
+		case 'distinct_changed':
+			return { ...state, distinct: action.value };
+
+		default:
+			throw new Error(`Invalid action type`);
+	}
+};
+
 const useFilters = () => {
-	const [filters, setFilters] = useState({
+	const [filters, dispatchFilters] = useReducer(filtersReducer, {
 		mediaType: MEDIA_TYPE.ANIME, // ANIME or MANGA
 		title: '', // search by title
 		genres: [], // Array de generos a filtrar (Romance, Action, ...)
@@ -16,35 +49,9 @@ const useFilters = () => {
 		distinct: false // Solo las series que no son comunes entre las 2 listas
 	});
 
-	const setMediaType = mediaType => setFilters({ ...filters, mediaType });
-	const setTitle = title => setFilters({ ...filters, title });
-	const setGenres = genre =>
-		setFilters({
-			...filters,
-			genres: filters.genres.includes(genre)
-				? filters.genres.filter(g => g !== genre)
-				: [genre, ...filters.genres]
-		});
-	const setList = list => setFilters({ ...filters, list });
-	const setShowFormat = showFormat => setFilters({ ...filters, showFormat });
-	const setStatus = status => setFilters({ ...filters, status });
-	const setCountry = country => setFilters({ ...filters, country });
-	const setYear = year => setFilters({ ...filters, year });
-	const setSort = sort => setFilters({ ...filters, sort });
-	const setDistinct = distinct => setFilters({ ...filters, distinct });
-
 	return {
 		filters,
-		setMediaType,
-		setTitle,
-		setGenres,
-		setList,
-		setShowFormat,
-		setStatus,
-		setCountry,
-		setYear,
-		setSort,
-		setDistinct
+		dispatchFilters
 	};
 };
 

@@ -16,12 +16,12 @@ const MediaSection = ({ user, userData, setMediaList, setUser, fillMediaList, fi
 				.then(data => data.users)
 				.then(users => {
 					setAutocompleteItems(users.results);
-					setUser(user, { loading: false });
+					setUser({ loading: false });
 				});
 		} else {
 			setAutocompleteItems([]);
-			setUser(user, { loading: false });
-			setMediaList(user, { data: [], loading: false });
+			setUser({ loading: false });
+			setMediaList({ data: [], loading: false });
 		}
 	};
 
@@ -47,12 +47,12 @@ const MediaSection = ({ user, userData, setMediaList, setUser, fillMediaList, fi
 				error={userData.user.error}
 				loading={userData.user.loading}
 				onChange={ev => {
-					setUser(user, { data: ev.target.value, loading: true });
+					setUser({ data: ev.target.value, loading: true });
 					optimizedFn(ev.target.value);
 				}}
 				handlerClick={ev => {
-					setUser(user, { data: ev.target.textContent });
-					setMediaList(user, { loading: true });
+					setUser({ data: ev.target.textContent });
+					setMediaList({ loading: true });
 					fillMediaList(user, ev.target.textContent);
 				}}
 				autocompleteItems={autocompleteItems}

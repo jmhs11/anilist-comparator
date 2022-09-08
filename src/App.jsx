@@ -1,21 +1,25 @@
 import { useQuery } from '@apollo/client';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Split from 'react-split';
 import Filters from './components/Filters';
 import Header from './components/Header';
 import MediaSection from './components/MediaSection';
 import { MEDIA_LIST_STATUSES } from './constants/mediaListStatuses';
 import { MEDIA_TYPE } from './constants/mediaTypes';
-import useAniUsers from './lib/hooks/useAniUsers';
+import useAniUsers, { TYPE } from './lib/hooks/useAniUsers';
 import useFilters from './lib/hooks/useFilters';
 import { SEARCH_USER_MEDIALIST } from './queries/searchMediaList';
 
 const App = () => {
-	const { aniUsers, setMediaList, setUser } = useAniUsers();
-	const { filters, ...setFiltersFunctions } = useFilters();
+	const { aniUsers, dispatchAniUsers } = useAniUsers();
+	const { filters, dispatchFilters } = useFilters();
 
 	const [appliedFilters, setAppliedFilters] = useState(false);
 	const [split, setSplit] = useState(window.innerWidth < 768);
+
+	useEffect(() => {
+		window.addEventListener('resize', () => setSplit(window.innerWidth < 768));
+	}, []);
 
 	const { refetch: searchMediaList } = useQuery(SEARCH_USER_MEDIALIST, { skip: true });
 
@@ -32,42 +36,22 @@ const App = () => {
 					loading: mediaList.loading
 				};
 
-				setMediaList(userKey, mediaListCustom);
+				dispatchAniUsers({
+					type: userKey === 'user1' ? TYPE.UPDATE_MEDIALIST_1 : TYPE.UPDATE_MEDIALIST_2,
+					value: mediaListCustom
+				});
 			});
 		}
 	};
 
 	const applyFilters = filters => {
 		setAppliedFilters(true);
+		if (aniUsers.user1.user.data) fillMediaList('user1', aniUsers.user1.user.data);
+		if (aniUsers.user2.user.data) fillMediaList('user2', aniUsers.user2.user.data);
 		console.log(filters);
 	};
 
-	const updateMediaLists = useCallback(() => {
-		if (aniUsers.user1.user.data) fillMediaList('user1', aniUsers.user1.user.data);
-		if (aniUsers.user2.user.data) fillMediaList('user2', aniUsers.user2.user.data);
-	}, []);
-
 	useEffect(() => {
-		console.log('useEffect Resize Listener');
-		window.addEventListener('resize', () => setSplit(window.innerWidth < 768));
-	}, []);
-
-	useEffect(() => {
-		console.log('updated user1 mediaList', aniUsers.user1.mediaList.data);
-	}, [aniUsers.user1.mediaList.data]);
-	useEffect(() => {
-		console.log('updated user2 mediaList', aniUsers.user2.mediaList.data);
-	}, [aniUsers.user2.mediaList.data]);
-
-	useEffect(() => {
-		if (appliedFilters) {
-			console.log('useEffect updateMediaLists');
-			updateMediaLists();
-		}
-	}, [appliedFilters, updateMediaLists]);
-
-	useEffect(() => {
-		console.log('distinct effect');
 		if (filters.distinct && appliedFilters) {
 			const mediaIds = {
 				user1: [],
@@ -107,16 +91,22 @@ const App = () => {
 
 			// const list2Ids = userList.map(list => list.entries.map(entry => entry.mediaId)).flat();
 
-			setMediaList('user1', { data: filteredData[0].user1 });
-			setMediaList('user2', { data: filteredData[1].user2 });
+			dispatchAniUsers({ type: TYPE.UPDATE_MEDIALIST_1, value: { data: filteredData[0].user1 } });
+			dispatchAniUsers({ type: TYPE.UPDATE_MEDIALIST_2, value: { data: filteredData[1].user2 } });
+			setAppliedFilters(false);
 		}
-		setAppliedFilters(false);
 	}, [filters.distinct, appliedFilters]);
 
 	return (
 		<>
 			<Header
-				slot={<Filters filters={filters} {...setFiltersFunctions} applyFilters={applyFilters} />}
+				slot={
+					<Filters
+						filters={filters}
+						dispatchFilters={dispatchFilters}
+						applyFilters={applyFilters}
+					/>
+				}
 			/>
 
 			{split ? (
@@ -124,16 +114,16 @@ const App = () => {
 					<MediaSection
 						user='user1'
 						userData={aniUsers.user1}
-						setMediaList={setMediaList}
-						setUser={setUser}
+						setMediaList={data => dispatchAniUsers({ type: TYPE.UPDATE_MEDIALIST_1, value: data })}
+						setUser={data => dispatchAniUsers({ type: TYPE.UPDATE_USER_1, value: data })}
 						fillMediaList={fillMediaList}
 						filters={filters}
 					/>
 					<MediaSection
 						user='user2'
 						userData={aniUsers.user2}
-						setMediaList={setMediaList}
-						setUser={setUser}
+						setMediaList={data => dispatchAniUsers({ type: TYPE.UPDATE_MEDIALIST_2, value: data })}
+						setUser={data => dispatchAniUsers({ type: TYPE.UPDATE_USER_2, value: data })}
 						fillMediaList={fillMediaList}
 						filters={filters}
 					/>
@@ -143,16 +133,16 @@ const App = () => {
 					<MediaSection
 						user='user1'
 						userData={aniUsers.user1}
-						setMediaList={setMediaList}
-						setUser={setUser}
+						setMediaList={data => dispatchAniUsers({ type: TYPE.UPDATE_MEDIALIST_1, value: data })}
+						setUser={data => dispatchAniUsers({ type: TYPE.UPDATE_USER_1, value: data })}
 						fillMediaList={fillMediaList}
 						filters={filters}
 					/>
 					<MediaSection
 						user='user2'
 						userData={aniUsers.user2}
-						setMediaList={setMediaList}
-						setUser={setUser}
+						setMediaList={data => dispatchAniUsers({ type: TYPE.UPDATE_MEDIALIST_2, value: data })}
+						setUser={data => dispatchAniUsers({ type: TYPE.UPDATE_USER_2, value: data })}
 						fillMediaList={fillMediaList}
 						filters={filters}
 					/>

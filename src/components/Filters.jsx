@@ -31,20 +31,7 @@ import SelectFilter from './forms/SelectFilter';
 // ];
 // // const COUNTRIES = ['Japan', 'Shouth Korea', 'China'];
 
-const Filters = ({
-	filters,
-	setMediaType,
-	setTitle,
-	setGenres,
-	setList,
-	setShowFormat,
-	setStatus,
-	setCountry,
-	setYear,
-	setSort,
-	setDistinct,
-	applyFilters
-}) => {
+const Filters = ({ filters, dispatchFilters, applyFilters }) => {
 	return (
 		<div className='dropdown dropdown-end ml-auto'>
 			<label
@@ -78,7 +65,7 @@ const Filters = ({
 				/> */}
 				<SelectFilter
 					value={filters.mediaType}
-					onChange={ev => setMediaType(ev.target.value)}
+					onChange={ev => dispatchFilters({ type: 'media_type_changed', value: ev.target.value })}
 					label='Tipo de contenido'
 				>
 					{Object.keys(MEDIA_TYPE).map(type => (
@@ -89,7 +76,7 @@ const Filters = ({
 				</SelectFilter>
 				<InputCheckbox
 					checked={filters.distinct}
-					onChange={ev => setDistinct(ev.target.checked)}
+					onChange={ev => dispatchFilters({ type: 'distinct_changed', value: ev.target.checked })}
 					label='Sólo series distintas'
 				/>
 				<ListFilter label='Listas'>
@@ -103,7 +90,10 @@ const Filters = ({
 									: ''
 							}`}
 							onClick={ev => {
-								setList(MEDIA_LIST_STATUSES[ev.target.textContent]);
+								dispatchFilters({
+									type: 'list_changed',
+									value: MEDIA_LIST_STATUSES[ev.target.textContent]
+								});
 							}}
 						>
 							{key}
@@ -183,7 +173,10 @@ const Filters = ({
 					/>
 				</FilterGroup> */}
 				<FilterGroup label='Sort'>
-					<SelectFilter value={filters.sort || 'SCORE'} onChange={ev => setSort(ev.target.value)}>
+					<SelectFilter
+						value={filters.sort || 'SCORE'}
+						onChange={ev => dispatchFilters({ type: 'sort_changed', value: ev.target.value })}
+					>
 						{Object.entries(SORT_OPTIONS).map(([key, value]) => (
 							<option key={key} value={value}>
 								{key}
