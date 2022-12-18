@@ -101,7 +101,7 @@ const App = () => {
 			/>
 
 			{split ? (
-				<Split className='md:hidden' direction='vertical' style={{ height: 'calc(100vh - 5rem)' }}>
+				<Split className='md:hidden' direction='vertical' style={{ height: 'calc(100dvh - 6rem)' }}>
 					<MediaSection
 						user='user1'
 						userData={aniUsers.user1}
